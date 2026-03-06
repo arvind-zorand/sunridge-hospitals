@@ -74,7 +74,7 @@ const Specialties = () => {
 
           <div className="section-title">
             <h3>Explore Our Core Departments</h3>
-            <p>Select a department to view doctors and services</p>
+            <p>Click a department below to explore doctors, treatments and services</p>
           </div>
 
           <div className="specialties__main-grid">
@@ -84,7 +84,8 @@ const Specialties = () => {
                 to={s.link}
                 className="specialties__main-card"
               >
-                {s.title}
+                <span className="specialties__main-title">{s.title}</span>
+                <span className="specialties__main-arrow">→</span>
               </Link>
             ))}
           </div>

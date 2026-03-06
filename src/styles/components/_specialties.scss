@@ -143,13 +143,13 @@
 .specialties__main-card {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 
-  text-align: center;
+  text-align: left;
   font-weight: 600;
   font-size: 1.05rem;
 
-  padding: 1.25rem 1rem;
+  padding: 1.25rem 1.5rem;
 
   border-radius: 0.75rem;
   text-decoration: none;
@@ -160,9 +160,24 @@
   box-shadow: 0 10px 30px rgba(0,0,0,0.15);
 
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  cursor: pointer;
+}
+
+.specialties__main-title {
+  flex: 1;
+}
+
+.specialties__main-arrow {
+  font-size: 1.4rem;
+  transition: transform 0.2s ease;
 }
 
 .specialties__main-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+}
+
+.specialties__main-card:hover .specialties__main-arrow {
+  transform: translateX(6px);
 }

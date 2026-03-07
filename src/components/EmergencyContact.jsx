@@ -2,7 +2,7 @@ import React from "react";
 
 const EmergencyContact = ({ onBookAppointment }) => {
 	return (
-		<section className="section section--purple emergency">
+		<section className="section section--purple emergency" id="contact">
 			<div className="container">
 				<div className="section-title reveal">
 					<h2>Contact</h2>

@@ -27,6 +27,41 @@
 	}
 }
 
+/* CALL BUTTON (above WhatsApp) */
+.call-float {
+	position: fixed;
+	width: 56px;
+	height: 56px;
+	bottom: 95px;
+	right: 20px;
+
+	background-color: #2563eb;
+	color: #ffffff;
+
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+	z-index: 9999;
+
+	text-decoration: none;
+
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+	&:hover {
+		background-color: #1d4ed8;
+		transform: scale(1.08);
+	}
+}
+
+/* icon size */
+.call-float svg {
+	width: 26px;
+	height: 26px;
+}
+
 @media screen and (max-width: 768px) {
 	.whatsapp-float {
 		width: 50px;
@@ -38,5 +73,17 @@
 			width: 28px;
 			height: 28px;
 		}
+	}
+
+	.call-float {
+		width: 46px;
+		height: 46px;
+		bottom: 75px;
+		right: 15px;
+	}
+
+	.call-float svg {
+		width: 22px;
+		height: 22px;
 	}
 }

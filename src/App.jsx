@@ -108,6 +108,20 @@ const AboutPage = ({ openAppointment }) => (
 	</>
 );
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth"
+    });
+  }, [pathname]);
+
+  return null;
+}
+
 export default function App() {
 	const [isAppointmentOpen, setIsAppointmentOpen] = useState(false);
 	const [selectedDoctor, setSelectedDoctor] = useState('');
@@ -117,12 +131,31 @@ export default function App() {
 	};
 	const closeAppointment = () => setIsAppointmentOpen(false);
 
+	function ScrollToHash() {
+		const { hash } = useLocation();
+
+		useEffect(() => {
+			if (hash) {
+			const el = document.querySelector(hash);
+			if (el) {
+				setTimeout(() => {
+				el.scrollIntoView({ behavior: "smooth" });
+				}, 100);
+			}
+			}
+		}, [hash]);
+
+		return null;
+		}
+
 	return (
 		<Router>
+			<ScrollToTop />
 			<ScrollRevealInit />
+			<ScrollToHash />
 			<PageTracker />
 			<div className="app">
-				<Header />
+				<Header onBookAppointment={openAppointment} />
 				<main>
 					<Routes>
 						<Route
@@ -159,6 +192,13 @@ export default function App() {
 				</main>
 				<Footer />
 				<WhatsAppButton />
+				<button
+					className="appointment-float"
+					onClick={() => openAppointment()}
+					aria-label="Book Appointment"
+				>
+					📅 Book Appointment
+				</button>
 				<Modal
 					isOpen={isAppointmentOpen}
 					onClose={closeAppointment}

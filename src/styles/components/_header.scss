@@ -289,14 +289,45 @@ main {
     }
 
     .nav__dropdown-call {
-      margin-top: 0.25rem;
-      display: inline-block;
-      padding: 0.5rem 0.75rem;
+      margin-top: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.875rem 1.25rem;
       border-radius: 999px;
-      background: $primary-color;
+      background: linear-gradient(135deg, $primary-color 0%, $accent-color 100%);
       color: $white;
       font-weight: 700;
+      font-size: 1rem;
       text-align: center;
+      letter-spacing: 0.01em;
+      box-shadow:
+        0 0 0 3px rgba($primary-color, 0.18),
+        0 6px 20px rgba($primary-color, 0.38);
+      position: relative;
+      overflow: visible;
+
+      /* Pulse ring — same as desktop pill */
+      &::before {
+        content: '';
+        position: absolute;
+        inset: -4px;
+        border-radius: 999px;
+        border: 2px solid rgba($accent-color, 0.45);
+        animation: phone-pulse 2.2s ease-out infinite;
+        pointer-events: none;
+      }
+
+      &:hover {
+        background: linear-gradient(135deg, darken($primary-color, 6%) 0%, $accent-color 100%);
+        box-shadow:
+          0 0 0 4px rgba($primary-color, 0.22),
+          0 8px 28px rgba($primary-color, 0.48);
+        transform: translateY(-1px);
+      }
+
+      transition: transform $transition-fast, box-shadow $transition-fast;
     }
 
     .nav__dropdown-close {

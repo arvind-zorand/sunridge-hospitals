@@ -2,13 +2,13 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 const firebaseConfig = {
-  apiKey: "AIzaSyC1qzGK7db5osxpxl-Jk-1Ac5B5r6M4czg",
-  authDomain: "sunridge-c16f5.firebaseapp.com",
-  projectId: "sunridge-c16f5",
-  storageBucket: "sunridge-c16f5.firebasestorage.app",
-  messagingSenderId: "475404958686",
-  appId: "1:475404958686:web:652cf824c32423a800bb4f",
-  measurementId: "G-K856FYGKH2"
+  apiKey: "AIzaSyBTJ_ySW27vN5T-H8gGMjFalOH9M9ZYvgw",
+  authDomain: "sunridge-979a0.firebaseapp.com",
+  projectId: "sunridge-979a0",
+  storageBucket: "sunridge-979a0.firebasestorage.app",
+  messagingSenderId: "753166064974",
+  appId: "1:753166064974:web:0c02c5a200c6142412521f",
+  measurementId: "G-5VLS1ZQ47K"
 };
 
 // Initialize Firebase

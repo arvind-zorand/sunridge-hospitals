@@ -2,8 +2,12 @@
 import React, { useState, useEffect } from 'react'
 import { doctors } from '../data/doctors'
 
-const DoctorsGrid = ({ onBookAppointment = () => {} }) => {
+const DoctorsGrid = ({ onBookAppointment = () => {}, specialty = null }) => {
   const [selected, setSelected] = useState(null)
+
+  const filteredDoctors = specialty
+    ? doctors.filter((d) => d.specialty === specialty)
+    : doctors
 
   // ESC closes modal
   useEffect(() => {
@@ -27,7 +31,7 @@ const DoctorsGrid = ({ onBookAppointment = () => {} }) => {
         </div>
 
         <div className="doctors__grid">
-          {doctors.map((doctor) => (
+          {filteredDoctors.map((doctor) => (
             <article
               key={doctor.id}
               className="doctors__card"
@@ -43,6 +47,7 @@ const DoctorsGrid = ({ onBookAppointment = () => {} }) => {
                 <h3>{doctor.name}</h3>
                 <p className="doctors__subtitle">{doctor.title}</p>
                 <p className="doctors__specialty">{doctor.specialty}</p>
+                <p className="doctors__availability">Available: {doctor.availability}</p>
               </div>
             </article>
           ))}
@@ -72,6 +77,9 @@ const DoctorsGrid = ({ onBookAppointment = () => {} }) => {
                 {selected.experienceYears > 0 && (
                   <p>{selected.experienceYears}+ years experience</p>
                 )}
+                <p className="doctors-modal__availability">
+                  Available: {selected.availability}
+                </p>
               </div>
             </div>
 
@@ -86,12 +94,9 @@ const DoctorsGrid = ({ onBookAppointment = () => {} }) => {
             </div>
 
             <div className="doctors-modal__actions">
-              <a href={selected.link} className="btn btn--primary">
-                View Full Profile
-              </a>
               <button
                 className="btn btn--accent"
-                onClick={() => onBookAppointment()}
+                onClick={() => onBookAppointment(selected.name)}
               >
                 Book Appointment
               </button>

@@ -23,7 +23,11 @@ import Modal from "./components/ModalComponent";
 import AppointmentFormModalContent from "./components/AppointmentFormModalContent";
 import WhatsAppButton from "./components/WhatsAppButton";
 import ThankYou from "./pages/ThankYou";
-
+import InternalMedicine from "./pages/specialties/InternalMedicine";
+import Gastroenterology from "./pages/specialties/Gastroenterology";
+import Orthopedics from "./pages/specialties/Orthopedics";
+import Pulmonology from "./pages/specialties/Pulmonology";
+import GeneralSurgery from "./pages/specialties/GeneralSurgery";
 
 function ScrollRevealInit() {
 	const location = useLocation();
@@ -67,6 +71,22 @@ function ScrollRevealInit() {
 	return null;
 }
 
+function PageTracker() {
+	const location = useLocation();
+
+	useEffect(() => {
+		if (window.gtag) {
+			window.gtag('event', 'page_view', {
+				page_path: location.pathname,
+				page_location: window.location.href,
+				send_to: 'AW-11379742425'
+			});
+		}
+	}, [location.pathname]);
+
+	return null;
+}
+
 const HomePage = ({ openAppointment }) => (
 	<>
 		<HeroSlider onBookAppointment={openAppointment} />
@@ -88,16 +108,54 @@ const AboutPage = ({ openAppointment }) => (
 	</>
 );
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth"
+    });
+  }, [pathname]);
+
+  return null;
+}
+
 export default function App() {
 	const [isAppointmentOpen, setIsAppointmentOpen] = useState(false);
-	const openAppointment = () => setIsAppointmentOpen(true);
+	const [selectedDoctor, setSelectedDoctor] = useState('');
+	const openAppointment = (doctorName = '') => {
+		setSelectedDoctor(doctorName);
+		setIsAppointmentOpen(true);
+	};
 	const closeAppointment = () => setIsAppointmentOpen(false);
+
+	function ScrollToHash() {
+		const { hash } = useLocation();
+
+		useEffect(() => {
+			if (hash) {
+			const el = document.querySelector(hash);
+			if (el) {
+				setTimeout(() => {
+				el.scrollIntoView({ behavior: "smooth" });
+				}, 100);
+			}
+			}
+		}, [hash]);
+
+		return null;
+		}
 
 	return (
 		<Router>
+			<ScrollToTop />
 			<ScrollRevealInit />
+			<ScrollToHash />
+			<PageTracker />
 			<div className="app">
-				<Header />
+				<Header onBookAppointment={openAppointment} />
 				<main>
 					<Routes>
 						<Route
@@ -119,6 +177,11 @@ export default function App() {
 								<ThankYou />
 							}
 						/>
+						<Route path="/specialties/internal-medicine" element={<InternalMedicine openAppointment={openAppointment} />} />
+						<Route path="/specialties/gastroenterology" element={<Gastroenterology openAppointment={openAppointment} />} />
+						<Route path="/specialties/orthopedics" element={<Orthopedics openAppointment={openAppointment} />} />
+						<Route path="/specialties/pulmonology" element={<Pulmonology openAppointment={openAppointment} />} />
+						<Route path="/specialties/general-surgery" element={<GeneralSurgery openAppointment={openAppointment} />} />
 						<Route
 							path="*"
 							element={
@@ -129,12 +192,22 @@ export default function App() {
 				</main>
 				<Footer />
 				<WhatsAppButton />
+				<button
+					className="appointment-float"
+					onClick={() => openAppointment()}
+					aria-label="Book Appointment"
+				>
+					📅 Book Appointment
+				</button>
 				<Modal
 					isOpen={isAppointmentOpen}
 					onClose={closeAppointment}
 					ariaLabel="Book Appointment"
 					>
-					<AppointmentFormModalContent onClose={closeAppointment} />
+					<AppointmentFormModalContent
+						onClose={closeAppointment}
+						selectedDoctor={selectedDoctor}
+					/>
 				</Modal>
 
 			</div>

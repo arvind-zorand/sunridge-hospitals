@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
-const Header = () => {
+const Header = ({ onBookAppointment }) => {
   const [open, setOpen] = useState(false)
   const dropdownRef = useRef(null)
   const location = useLocation()
@@ -66,7 +66,7 @@ const Header = () => {
           <a href="/#location">Our Hospitals</a>
           <a href="/#specialties">Our Specialities</a>
           <a href="/#doctors">Our Doctors</a>
-          <a href="/#location">Contact Us</a>
+          <a href="/#contact">Contact Us</a>
         </div>
 
         {/* Desktop phone pill (hidden on mobile via SCSS) */}
@@ -103,7 +103,7 @@ const Header = () => {
           <a href="/#location" onClick={closeMenu}>Our Hospitals</a>
           <a href="/#specialties" onClick={closeMenu}>Our Specialities</a>
           <a href="/#doctors" onClick={closeMenu}>Our Doctors</a>
-          <a href="/#location" onClick={closeMenu}>Contact Us</a>
+          <a href="/#contact" onClick={closeMenu}>Contact Us</a>
 
           <a className="nav__dropdown-call" href="tel:+919652766690" onClick={closeMenu}>
             📞 Call +91 9652766690

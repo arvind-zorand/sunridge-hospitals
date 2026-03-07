@@ -15,6 +15,7 @@
 @use './styles/components/insurance';
 @use './styles/components/map';
 @use './styles/components/whatsapp';
+@use "./styles/components/specialty-page";
 
 *,
 *::before,
@@ -234,5 +235,14 @@ main {
   &--visible {
     opacity: 1;
     transform: translate(0, 0);
+  }
+}
+
+.section.map-section {
+  .section-title.reveal {
+    p {
+      color: $text-color !important;
+      opacity: 1;
+    }
   }
 }

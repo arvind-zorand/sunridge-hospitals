@@ -6,8 +6,8 @@ const VideoBanner = () => {
     <section className="section section--white video-banner">
       <div className="container">
         <div className="section-title reveal">
-          <h2>Inside Sunridge Hospitals</h2>
-          <p>Take a quick tour of our facilities and patient-first approach</p>
+          <h2>What Our Patients Say</h2>
+          <p>Real experiences from our community—patient-first care at its best</p>
         </div>
 
         <div className="video-banner__wrapper reveal">

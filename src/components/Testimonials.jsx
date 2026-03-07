@@ -17,8 +17,8 @@ const Testimonials = () => {
     <section className="section section--light testimonials">
       <div className="container">
         <div className="section-title reveal">
-          <h2>What Our Patients Say</h2>
-          <p>Real experiences from our community—patient-first care at its best</p>
+          <h2>Inside Sunridge Hospitals</h2>
+          <p>Take a quick tour of our facilities and patient-first approach</p>
         </div>
 
         {/* Infinite marquee viewport */}

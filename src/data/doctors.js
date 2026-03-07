@@ -10,6 +10,7 @@ export const doctors = [
     image: '/images/shirish.jpg',
     link: '/doctors/dr-p-shirish-kumar',
     bio: 'Dr. Shirish Kumar brings over 12 years of experience in providing evidence-based and patient-focused medical care.',
+    availability: '24×7',
   },
   {
     id: 2,
@@ -22,6 +23,7 @@ export const doctors = [
     image: '/images/vamsi-krishna.png',
     link: '/doctors/dr-vamshi-krishna-ejjagiri',
     bio: 'Trauma and Joint Replacement Surgeon focusing on personalized orthopaedic care.',
+    availability: '5:00 PM – 9:00 PM',
   },
   {
     id: 3,
@@ -34,6 +36,7 @@ export const doctors = [
     image: '/images/shaik-siddiq.jpeg',
     link: '/doctors/dr-shaik-siddiq',
     bio: 'Consultant pulmonologist with expertise in airway and respiratory care.',
+    availability: '5:00 PM – 9:00 PM',
   },
   {
     id: 4,
@@ -52,6 +55,7 @@ export const doctors = [
     image: '/images/suresh.jpg',
     link: '/doctors/dr-d-suresh-babu',
     bio: 'Expert in minimally invasive and laser surgical procedures.',
+    availability: '5:00 PM – 9:00 PM',
   },
   {
     id: 5,
@@ -64,5 +68,6 @@ export const doctors = [
     image: '/images/vamsidhar.webp',
     link: '/doctors/gastro-specialist',
     bio: 'Senior consultant specializing in advanced endoscopic procedures.',
+    availability: '5:00 PM – 9:00 PM',
   },
 ]

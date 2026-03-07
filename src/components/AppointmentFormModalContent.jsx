@@ -4,48 +4,26 @@ import { useNavigate } from "react-router-dom";
 import React, { useMemo, useState } from 'react'
 import { doctors } from '../data/doctors'
 
-// --- Firebase init (inline, using your credentials) ---
-import { initializeApp } from 'firebase/app'
-import { getAnalytics } from 'firebase/analytics'
-import {
-  getFirestore,
-  addDoc,
-  collection,
-  serverTimestamp,
-  query,
-  where,
-  getDocs,
-  updateDoc,
-} from 'firebase/firestore'
+const GOOGLE_SHEET_URL = import.meta.env.VITE_GOOGLE_SHEET_URL;
 
-// Your Firebase config (hardcoded here for now)
-const firebaseConfig = {
-  apiKey: 'AIzaSyC1qzGK7db5osxpxl-Jk-1Ac5B5r6M4czg',
-  authDomain: 'sunridge-c16f5.firebaseapp.com',
-  projectId: 'sunridge-c16f5',
-  storageBucket: 'sunridge-c16f5.firebasestorage.app',
-  messagingSenderId: '475404958686',
-  appId: '1:475404958686:web:652cf824c32423a800bb4f',
-  measurementId: 'G-K856FYGKH2',
-}
-
-// Initialize app once
-const app = initializeApp(firebaseConfig)
-
-// Initialize analytics safely (optional)
-try {
-  if (typeof window !== 'undefined') {
-    getAnalytics(app)
+const sendToGoogleSheet = async (payload) => {
+  try {
+    await fetch(GOOGLE_SHEET_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+  } catch (err) {
+    console.error("Google Sheet logging failed", err);
   }
-} catch {
-  // ignore analytics errors in non-browser contexts
-}
+};
 
-// Create Firestore instance locally (no external import)
-const db = getFirestore(app)
 
 // --- Component ---
-const AppointmentFormModalContent = ({ onClose }) => {
+const AppointmentFormModalContent = ({ onClose, selectedDoctor = '' }) => {
   const COMPANY_NAME = 'Sunridge Hospital'
   const navigate = useNavigate();
 
@@ -58,15 +36,20 @@ const AppointmentFormModalContent = ({ onClose }) => {
     return `${yyyy}-${mm}-${dd}`
   }, [])
 
-  const [form, setForm] = useState({
-    fullName: '',
-    phone: '',
-    email: '',
-    hospital: '',
-    doctor: '',
-    speciality: '',
-    date: '',
+  const [form, setForm] = useState(() => {
+    const doc = doctors.find(d => d.name === selectedDoctor)
+
+    return {
+      fullName: '',
+      phone: '',
+      email: '',
+      hospital: '',
+      doctor: selectedDoctor || '',
+      speciality: doc?.specialty || '',
+      date: '',
+    }
   })
+
   const [touched, setTouched] = useState({})
   const [errors, setErrors] = useState({})
   const [status, setStatus] = useState({ sending: false, ok: null, message: '' })
@@ -109,75 +92,36 @@ const AppointmentFormModalContent = ({ onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    // Mark all as touched on submit attempt
-    const allTouched = Object.keys(form).reduce((acc, key) => ({ ...acc, [key]: true }), {})
+
+    // mark all fields touched (keeps your red errors working)
+    const allTouched = Object.keys(form).reduce(
+      (acc, key) => ({ ...acc, [key]: true }),
+      {}
+    )
     setTouched(allTouched)
 
     const nextErrors = validate()
     setErrors(nextErrors)
-    if (Object.keys(nextErrors).length > 0) {
-      setStatus({ sending: false, ok: false, message: 'Please fix the highlighted fields.' })
-      return
-    }
+    if (Object.keys(nextErrors).length > 0) return
 
     try {
-
       setStatus({ sending: true, ok: null, message: 'Saving your request…' })
 
-      // Normalize email for consistent matching
       const normalizedEmail = form.email.trim().toLowerCase()
 
-      // Look for existing appointment by email
-      const q = query(collection(db, 'appointments'), where('email', '==', normalizedEmail))
+      await sendToGoogleSheet({
+        ...form,
+        email: normalizedEmail,
+        companyName: COMPANY_NAME,
+        createdAt: new Date().toISOString(),
+      })
 
-      // 👉 If you want uniqueness per email + date, use this query instead:
-      // const q = query(
-      //   collection(db, 'appointments'),
-      //   where('email', '==', normalizedEmail),
-      //   where('date', '==', form.date.trim())
-      // )
+      setStatus({
+        sending: false,
+        ok: true,
+        message: 'Your appointment was created successfully.',
+      })
 
-      const snap = await getDocs(q)
-
-      if (!snap.empty) {
-        const existing = snap.docs[0]
-        await updateDoc(existing.ref, {
-          fullName: form.fullName,
-          phone: form.phone,
-          email: normalizedEmail,
-          hospital: form.hospital,
-          speciality: form.speciality,
-          doctor: form.doctor,
-          date: form.date,
-          companyName: COMPANY_NAME,
-          updatedAt: serverTimestamp(),
-        })
-        setStatus({
-          sending: false,
-          ok: true,
-          message: 'Your existing appointment was updated successfully.',
-        })
-      } else {
-        await addDoc(collection(db, 'appointments'), {
-          fullName: form.fullName,
-          phone: form.phone,
-          email: normalizedEmail,
-          hospital: form.hospital,
-          speciality: form.speciality,
-          doctor: form.doctor,
-          date: form.date,
-          companyName: COMPANY_NAME,
-          createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp(),
-        })
-        setStatus({
-          sending: false,
-          ok: true,
-          message: 'Your appointment was created successfully.',
-        })
-      }
-
-      // Clear form
       setForm({
         fullName: '',
         phone: '',
@@ -187,12 +131,14 @@ const AppointmentFormModalContent = ({ onClose }) => {
         speciality: '',
         date: '',
       })
-      setTouched({});
-      onClose();
-      navigate("/thank-you");
+
+      setTouched({})
+      onClose()
+      navigate('/thank-you')
 
     } catch (err) {
       console.error(err)
+
       setStatus({
         sending: false,
         ok: false,

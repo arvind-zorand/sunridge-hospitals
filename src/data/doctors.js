@@ -1,9 +1,9 @@
 export const doctors = [
   {
     id: 1,
-    name: 'Dr. P. Shirish Kumar - General Physician & Internal Medicine Specialist',
+    name: 'Dr. P. Shirish Kumar - Consultant physician, DIABETOLOGIST and Critical care specialist',
     degrees: 'MBBS, MD (General Medicine)',
-    title: 'Consultant General Physician & Internal Medicine Specialist',
+    title: 'Specializing in Internal Medicine, Diabetes Care, and Critical Care Medicine',
     specialty: 'General Medicine',
     expertise: ['Diabetes', 'Hypertension', 'Infectious Diseases', 'Critical Care', 'Lifestyle Disorders'],
     experienceYears: 12,
